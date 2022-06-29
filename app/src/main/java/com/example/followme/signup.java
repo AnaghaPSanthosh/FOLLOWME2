@@ -1,23 +1,86 @@
 package com.example.followme;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class signup extends AppCompatActivity {
+    private EditText mEmail, mPass, mPhone , mName;
+    private Button mRegister;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mFirebaseAuthStateListnener;
+    Button btn2_signup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        Intent intent=getIntent();
+        String message=intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        TextView textView=findViewById(R.id.name);
+        mEmail = (EditText) findViewById(R.id.etemail);
+        mPass = (EditText) findViewById(R.id.pass);
+        mRegister = (Button) findViewById(R.id.reg);
+        mName = (EditText) findViewById(R.id.name);
+        mPhone = (EditText) findViewById(R.id.etmob);
+        String email = mEmail.getText().toString().trim();
+        String password= mPass.getText().toString().trim();
+        if(email.isEmpty())
+        {
+            mEmail.setError("Email is empty");
+            mPass.requestFocus();
+            return;
+        }
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+        {
+            mEmail.setError("Enter the valid email address");
+            mEmail.requestFocus();
+            return;
+        }
+        if(password.isEmpty())
+        {
+            mPass.setError("Enter the password");
+            mPass.requestFocus();
+            return;
+        }
+        if(password.length()<6)
+        {
+            mPass.setError("Length of the password should be more than 6");
+            mPass.requestFocus();
+            return;
+        }
+        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful())
+                {
+                    Toast.makeText(signup.this,"You are successfully Registered", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(signup.this,"You are not Registered! Try again",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
-        // Capture the layout's TextView and set the string as its text
-        //TextView textView = findViewById(R.id.textView);
-        //textView.setText(message);
     }
 }
