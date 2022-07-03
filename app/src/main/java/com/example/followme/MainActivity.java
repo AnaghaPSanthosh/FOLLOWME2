@@ -1,26 +1,18 @@
 package com.example.followme;
 
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.followme.MESSAGE";
@@ -30,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_login,btn_sign;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-    family family;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseDatabase=FirebaseDatabase.getInstance();
         databaseReference=firebaseDatabase.getReference("family");
-        family=new family();
+
         btn_login = findViewById(R.id.login);
         btn_sign = findViewById(R.id.reg);
         mAuth = FirebaseAuth.getInstance();
